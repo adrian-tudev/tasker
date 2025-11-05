@@ -1,0 +1,28 @@
+# Tasker
+A minimalistic command-line task manager written in with typer and python.
+
+## Features
+- Add, list and archive tasks
+- Priority levels: **LOW**, **MEDIUM**, **HIGH**
+- Tags to organize tasks
+- Persistent storage through SQLite (`.todo.db`)
+
+# Usage
+```bash
+$ tasker add "eat ice cream 😁" --prio HIGH
+Added task "eat ice cream 😁" with prio [HIGH🟥]
+$ tasker archive 2
+Woho! finished task 2 👌
+$ tasker list --archived
+1: [HIGH🟥] eat ice cream
+2: [LOW 🟩] buy sum groceries
+3: [MEDIUM 🟨] study 😒
+```
+
+## Installation
+```bash
+$ git clone https://github.com/adrian-tudev/tasker
+$ cd tasker
+$ pip install -r requirements.txt
+```
+

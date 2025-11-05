@@ -1,28 +1,44 @@
-from enum import Enum
 import sqlite3
-from pathlib import Path
-from dataclasses import dataclass
+from models import Task, Prio
+from rich import print
 
 DB_PATH = '.todo.db'
 
-class Prio(Enum):
-  HIGH = 1
-  MEDIUM = 2
-  LOW = 3
-
-@dataclass
-class Task:
-    task: str
-    prio: Prio = Prio.MEDIUM
-    archived: bool = False
-
 def init_db():
-  with sqlite3.connect(DB_PATH) as con:
-    con.execute("""
-      CREATE TABLE IF NOT EXISTS tasks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        task TEXT NOT NULL,
-        prio TEXT NOT NULL,
-        archived INTEGER DEFAULT 0
+  with sqlite3.connect(DB_PATH) as conn:
+    conn.execute("""
+    CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    task TEXT NOT NULL,
+    prio INTEGER NOT NULL,
+    archived INTEGER DEFAULT 0
     )""")
+
+def add_task(task: Task):
+  with sqlite3.connect(DB_PATH) as conn:
+    conn.execute("""
+        INSERT INTO tasks (task, prio, archived)
+        VALUES (?, ?, ?)
+    """, (task.task, int(task.prio), int(task.archived)))
+
+def print_all_tasks(show_archived: bool = False):
+    with sqlite3.connect(DB_PATH) as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT id, task, prio, archived FROM tasks")
+        for id, task_name, prio, archived in cur.fetchall():
+            if show_archived and not archived:
+                continue
+
+            priority: Prio = Prio(prio)
+            sign: str = '🟨'
+            match priority:
+                case Prio.LOW:
+                    sign = '🟩'
+                case Prio.MEDIUM:
+                    sign = '🟨'
+                case Prio.HIGH:
+                    sign = '🟥'
+
+            print(f"{id}: [{priority.name}{sign}] '{task_name}' " + ("✅" if show_archived and archived else ""))
+
 
