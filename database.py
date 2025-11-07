@@ -1,8 +1,9 @@
 import sqlite3
 from models import Task, Prio
+from pathlib import Path
 from rich import print
 
-DB_PATH = '.todo.db'
+DB_PATH = Path.home() /'.todo.db'
 
 def init_db():
   with sqlite3.connect(DB_PATH) as conn:
@@ -25,6 +26,11 @@ def remove_task(task_id: int):
   with sqlite3.connect(DB_PATH) as conn:
     conn.execute("DELETE FROM tasks where id=?", (task_id,))
 
+def archive_task(task_id: int):
+  with sqlite3.connect(DB_PATH) as conn:
+    conn.execute("UPDATE tasks SET archived=? WHERE id=?", (1, task_id))
+    conn.commit()
+
 def print_all_tasks(show_archived: bool = False):
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
@@ -37,7 +43,7 @@ def print_all_tasks(show_archived: bool = False):
             if show_archived and not archived:
                 continue
 
-            priority: Prio = Prio(prio)
+            priority: Prio = Prio(int(prio))
             sign: str = '🟨'
             match priority:
                 case Prio.LOW:

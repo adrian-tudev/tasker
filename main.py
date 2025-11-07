@@ -28,7 +28,7 @@ def add(task: str, prio: Optional[str] = None):
   db.add_task(Task(task, priority))
 
 @app.command()
-def list(archived: bool = False):
+def ls(archived: bool = False):
   """
   List all your tasks
   """
@@ -37,16 +37,17 @@ def list(archived: bool = False):
 @app.command()
 def archive(task_id: int):
   """
-  Print the list
+  Mark task as done
   """
   print(f"Archived task {task_id}")
 
 @app.command()
-def remove(task_id: int):
+def rm(task_id: int):
   """
   Remove task with given id
   """
   db.remove_task(task_id)
+  print(f"Removed task {task_id}")
 
 if __name__ == "__main__":
   db.init_db()
