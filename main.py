@@ -9,6 +9,9 @@ app = typer.Typer()
 
 @app.command()
 def add(task: str, prio: Optional[str] = None):
+  """
+  Adds a task to your list
+  """
   priority: Prio = Prio.MEDIUM
   match prio:
     case "LOW" | "l":
@@ -26,18 +29,26 @@ def add(task: str, prio: Optional[str] = None):
 
 @app.command()
 def list(archived: bool = False):
+  """
+  List all your tasks
+  """
   db.print_all_tasks(archived)
 
 @app.command()
 def archive(task_id: int):
-    print(f"Archived task {task_id}")
+  """
+  Print the list
+  """
+  print(f"Archived task {task_id}")
 
 @app.command()
 def remove(task_id: int):
-  print(f"Removed task {task_id} :(")
+  """
+  Remove task with given id
+  """
+  db.remove_task(task_id)
 
 if __name__ == "__main__":
   db.init_db()
   app()
-
 

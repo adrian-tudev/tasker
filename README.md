@@ -1,5 +1,5 @@
 # Tasker
-A minimalistic command-line task manager written in with typer and python.
+A minimalistic command-line task manager written with typer and python.
 
 ## Features
 - Add, list and archive tasks
