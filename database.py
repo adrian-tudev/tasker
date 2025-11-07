@@ -1,7 +1,7 @@
 import sqlite3
-from models import Task, Prio
 from pathlib import Path
 from rich import print
+from .models import Task, Prio
 
 DB_PATH = Path.home() /'.todo.db'
 
