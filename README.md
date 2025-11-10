@@ -22,8 +22,7 @@ $ tasker ls
 ```
 
 ## Installation
+### Using pip:
 ```bash
-$ git clone https://github.com/adrian-tudev/tasker
-$ cd tasker
-$ pip install -e .
+pip install python-tasker
 ```
